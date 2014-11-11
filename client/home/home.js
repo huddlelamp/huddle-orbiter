@@ -3,7 +3,7 @@ if (Meteor.isClient) {
   var getHost = function() {
     var absoluteUrl = Meteor.absoluteUrl();
     absoluteUrl = absoluteUrl.split(":")[1];
-    return absoluteUrl.substr(2, absoluteUrl.length);
+    return absoluteUrl.substr(2, absoluteUrl.length - 3);
   };
 
   var getPort = function() {
