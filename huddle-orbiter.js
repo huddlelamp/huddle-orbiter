@@ -11,7 +11,17 @@ Schemas.Clients = new SimpleSchema({
   },
   userId: {
     type: String,
-    regEx: SimpleSchema.RegEx.Id
+    regEx: SimpleSchema.RegEx.Id,
+    autoform: {
+      options: function() {
+        return _.map(Meteor.users.find().fetch(), function(user) {
+          return {
+            label: user.emails[0].address,
+            value: user._id
+          };
+        });
+      }
+    }
   },
   name: {
     type: String
