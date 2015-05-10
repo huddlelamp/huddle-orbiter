@@ -3,7 +3,7 @@ if (Meteor.isClient) {
   var getHost = function() {
     var absoluteUrl = Meteor.absoluteUrl();
     absoluteUrl = absoluteUrl.split(":")[1];
-    return absoluteUrl.substr(2, absoluteUrl.length - 3);
+    return absoluteUrl.substr(2, absoluteUrl.length - 2);
   };
 
   var getPort = function() {
@@ -22,7 +22,7 @@ if (Meteor.isClient) {
     var port = getPort();
 
     return Meteor.absoluteUrl("?host=" + host + "&port=" + port, {
-      rootUrl: "http://waldo.huddlelamp.org"
+      rootUrl: "http://demo-app.huddlelamp.org"
     });
   };
 
@@ -32,6 +32,28 @@ if (Meteor.isClient) {
       return false;
       // console.log(Clients.find().count());
       // return Clients.find().count() < 1;
+    }
+  });
+
+  Template.connectDemoApp.rendered = function() {
+    $('.add-device-qrcode').qrcode({
+      // render: "table",
+      width: 128,
+      height: 128,
+      text: getAppUrl()
+    });
+  };
+
+  /**
+   *
+   */
+  Template.connectDemoApp.helpers({
+
+    /**
+     *
+     */
+    appUrl: function() {
+      return getAppUrl();
     }
   });
 
@@ -47,18 +69,11 @@ if (Meteor.isClient) {
     appUrl: function() {
       return getAppUrl();
     }
-  })
+  });
 
   Template.exampleUsage.rendered = function() {
     $("pre code").each(function(i, block) {
       hljs.highlightBlock(block);
-    });
-
-    $('.add-device-qrcode').qrcode({
-      // render: "table",
-      // width: 128,
-      // height: 128,
-      text: getAppUrl()
     });
   };
 }
@@ -165,26 +180,28 @@ if (Meteor.isClient) {
    *
    */
   Template.display.events({
-    "click .cmd-client-identify-on": function() {
+    'click .cmd-client-identify-on': function() {
       var id = this.id;
       Meteor.call("identifyDevice", id, true, function(error, result) {
         console.log(result);
       });
     },
-    "click .cmd-client-identify-off": function() {
+    'click .cmd-client-identify-off': function() {
       var id = this.id;
       Meteor.call("identifyDevice", id, false, function(error, result) {
         console.log(result);
       });
     },
-    "click .cmd-client-showred-on": function() {
+    'click .cmd-client-trigger-connect': function() {
       var id = this.id;
+
       Meteor.call("showColor", id, "rgb(255,0,0)", true, function(error, result) {
         console.log(result);
       });
     },
-    "click .cmd-client-showred-off": function() {
+    'click .cmd-client-trigger-disconnect': function() {
       var id = this.id;
+      
       Meteor.call("showColor", id, "", false, function(error, result) {
         console.log(result);
       });

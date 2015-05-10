@@ -242,28 +242,3 @@ HuddleOrbiter.prototype.identifyDevice = function(id, enabled) {
 
   this.sendToId(id, msgObject);
 };
-
-HuddleOrbiter.prototype.showRed = function(id, enabled) {
-  var msgObject = {
-    Type: "Digital",
-    Data: {
-      Type: "ShowRed",
-      Value: enabled
-    }
-  };
-
-  this.sendToId(id, msgObject);
-};
-
-HuddleOrbiter.prototype.showColor = function(id, color, enabled) {
-  var msgObject = {
-    Type: "Digital",
-    Data: {
-      Type: "ShowColor",
-      Color: color,
-      Value: enabled
-    }
-  };
-
-  this.sendToId(id, msgObject);
-};

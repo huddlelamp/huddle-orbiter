@@ -26,7 +26,7 @@
 
 <template name="exampleUsage">
   <div class="page-header">
-    <h1>Congratulations! <small>you are all set.</small></h1>
+    <h1>Welcome to HuddleOrbiter! <small>start developing Huddle apps.</small></h1>
   </div>
 
   <!-- <ol>
@@ -58,6 +58,10 @@
     </div>
   </div> -->
 
+  {{> connectDemoApp}}
+
+  {{> createSimpleApp}}
+
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Example</h3>
@@ -68,6 +72,35 @@
           console.log(data);
         });
         .connect("{{host}}", {{port}});</code></pre>
+    </div>
+  </div>
+</template>
+
+<template name="connectDemoApp">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">1. Connect demo app to simulator.</h3>
+    </div>
+    <div class="panel-body">
+      <p>If your device does not have a camera or a QR code scanner you can open a browser and type this URL.</p>
+      <div>
+        <a href="{{appUrl}}" target="_blank">{{appUrl}}</a>
+      </div>
+      <div>- OR -</div>
+      <div>
+        <div class="add-device-qrcode"></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="createSimpleApp">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">2. Create simple app.</h3>
+    </div>
+    <div class="panel-body">
+
     </div>
   </div>
 </template>
@@ -87,22 +120,16 @@
           <div class="col-md-6 col-md-offset-1">{{id}}</div>
         </div>
 
-        {{#if isDeveloperUser}}
         <div class="row">
-          <div class="col-md-4 col-md-offset-1">Identify</div>
+          <div class="col-md-4 col-md-offset-1">Glyph</div>
           <div class="col-md-6 col-md-offset-1 btn-group">
             <button type="button" class="cmd-client-identify-on btn btn-default btn-xs">On</button>
             <button type="button" class="cmd-client-identify-off btn btn-default btn-xs">Off</button>
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-md-4 col-md-offset-1">ShowRed</div>
-          <div class="col-md-6 col-md-offset-1 btn-group">
-            <button type="button" class="cmd-client-showred-on btn btn-default btn-xs">On</button>
-            <button type="button" class="cmd-client-showred-off btn btn-default btn-xs">Off</button>
-          </div>
-        </div>
+        {{#if isDeveloperUser}}
+
         {{/if}}
       </div>
     </div>

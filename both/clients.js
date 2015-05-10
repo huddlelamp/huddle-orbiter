@@ -1,5 +1,3 @@
-Schemas = {};
-
 Clients = new Mongo.Collection("clients");
 
 Schemas.Clients = new SimpleSchema({
@@ -61,11 +59,3 @@ Schemas.Clients = new SimpleSchema({
 });
 
 Clients.attachSchema(Schemas.Clients);
-
-AdminConfig = {
-  name: 'Huddle Orbiter',
-  adminEmails: ['roman.raedle@outlook.com'],
-  collections: {
-    Clients: {}
-  }
-}

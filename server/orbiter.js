@@ -3,6 +3,13 @@ if (Meteor.isServer) {
   Meteor.startup(function() {
     var _orbiters = { };
 
+    // remove existing clients on startup
+    var clients = Clients.find().fetch();
+    console.log(clients.length);
+    _.each(clients, function(client) {
+      Clients.remove(client);
+    });
+
     var startOrbiter = function(userId, port) {
 
       if (!_orbiters[userId]) {
