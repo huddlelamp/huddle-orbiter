@@ -1,5 +1,8 @@
 if (Meteor.isClient) {
 
+  // // initialize event hooks
+  // Hooks.init();
+
   /**
    * Returns a number whose value is limited to the given range.
    *
@@ -15,11 +18,13 @@ if (Meteor.isClient) {
     return Math.min(Math.max(this, min), max);
   };
 
-  Template.navigation.helpers({
+  var huddle;
 
-    /**
-     *
-     */
+  Deps.autorun(function() {
+    Meteor.subscribe("clients-subscription");
+  });
+
+  Template.navigation.helpers({
     "active": function(path) {
         var router = Router.current();
         if (router && router.route.name === path) {

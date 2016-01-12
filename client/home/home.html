@@ -1,27 +1,10 @@
 <template name="home">
-  {{#if currentUser}}
+  <!-- <div class="jumbotron"> -->
 
-    {{> exampleUsage}}
-
-    <div class="orbit-wrapper">
-      <div class="orbit">
-        {{#each clients}}
-          {{> display}}
-        {{/each}}
-        {{#if hasNoClients}}
-          <div style="background-color: yellow;">
-            <div style="background-color: blue; ">
-              <div style="border: 1px solid black; background-color: green;">
-                <div style="border: 5px solid pink; text-align: center;"></div>
-                <div class="add-device-qrcode" style="text-align: center;"></div>
-              </div>
-            </div>
-          </div>
-        {{/if}}
-      </div>
-    </div>
-
-  {{/if}}
+    {{#if currentUser}}
+      {{> exampleUsage}}
+    {{/if}}
+  <!-- </div> -->
 </template>
 
 <template name="exampleUsage">
@@ -29,82 +12,18 @@
     <h1>Congratulations! <small>you are all set.</small></h1>
   </div>
 
-  <!-- <ol>
-    <li>Developer creates account / logs in</li>
-    <li>Developers sees simulated tabletop but there are not devices yet. (Title says simulated tabletop, this is a simulated tabletop and whay you're seeing is the camera's perspective. But there are not devices connected yet.</li>
-    <ol>
-      <li>Connect a device by scanning the QR code. (It can be any mobile device that can scan QR codes and has a mobile web browser.)</li>
-      <li>If your device does not have a camera or a QR code scanner you can open a browser and type this URL.</li>
-    </ol>
-    <li>An outline (not sure if that is the right word) of your device will appear on the simulated tabletop.</li>
-    <li>Click and hold your simulated device (whatever word was chosen above) and move it across the simulated tabletop. Watch what happens your real device! When you release your mouse button, the simulated device stays put.</li>
-  </ol> -->
-
-  <!-- <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Connect a device by scanning the QR code. (It can be any mobile device that can scan QR codes and has a mobile web browser.)</h3>
-    </div>
-    <div class="panel-body">
-      <div class="add-device-qrcode"></div>
-    </div>
-  </div>
-
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">If your device does not have a camera or a QR code scanner you can open a browser and type this URL.</h3>
-    </div>
-    <div class="panel-body">
-      <a href="{{appUrl}}" target="_blank">{{appUrl}}</a>
-    </div>
-  </div> -->
+  <div class="alert alert-info" role="alert">Your <b>HuddleOrbiter</b> is running a WebSocket server at <b>ws://{{host}}:{{port}}</b>. The code example below illustrates how to connect a Huddle client using JavaScript to the HuddleOrbiter. After Huddle clients are connected to the HuddleOrbiter they appear in the <a class="alert-link" href="{{pathFor "orbit"}}">Orbit</a> and their proximity can be manipulated visually.</div>
 
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Example</h3>
     </div>
     <div class="panel-body">
-      <pre><code class="hljs javascript">var huddle = Huddle.client()
+      <pre><code class="hljs javascript">var huddle = Huddle.client("MyHuddle")
         .on("proximity", function(data) {
           console.log(data);
-        });
+        })
         .connect("{{host}}", {{port}});</code></pre>
-    </div>
-  </div>
-</template>
-
-<!--
-  Display template.
--->
-<template name="display">
-  <div id="{{_id}}" class="orbit-client orbit-client-{{deviceType}}">
-    <div class="orbit-client-{{deviceType}}" style="background-image: url('images/devices/{{deviceType}}.png'); background-size: contain;"></div>
-    <!-- <img class="orbit-client-background" src="images/devices/{{deviceType}}.png" style="background-image: -webkit-radial-gradient(center, 9em 100px, green, transparent);"> -->
-    <div style="position: absolute; top: 20px">
-
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-4 col-md-offset-1">Id</div>
-          <div class="col-md-6 col-md-offset-1">{{id}}</div>
-        </div>
-
-        {{#if isDeveloperUser}}
-        <div class="row">
-          <div class="col-md-4 col-md-offset-1">Identify</div>
-          <div class="col-md-6 col-md-offset-1 btn-group">
-            <button type="button" class="cmd-client-identify-on btn btn-default btn-xs">On</button>
-            <button type="button" class="cmd-client-identify-off btn btn-default btn-xs">Off</button>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-4 col-md-offset-1">ShowRed</div>
-          <div class="col-md-6 col-md-offset-1 btn-group">
-            <button type="button" class="cmd-client-showred-on btn btn-default btn-xs">On</button>
-            <button type="button" class="cmd-client-showred-off btn btn-default btn-xs">Off</button>
-          </div>
-        </div>
-        {{/if}}
-      </div>
     </div>
   </div>
 </template>

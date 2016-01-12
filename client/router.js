@@ -1,152 +1,79 @@
 if (Meteor.isClient) {
 
-  /**
-   *
-   */
-  var isUserLoggedInWithRoles = function(roles) {
+  var isUserLoggedInWithRoles = function(roles, route) {
 
     // Need to load user like this because Meteor.user() might only have id.
-    var user = Meteor.user();
+    var userId = Meteor.userId();
+    var user = getUser(userId);
 
     // console.log(userId + "," + user);
 
-    if (user != null && Roles.userIsInRole(user, roles)) {
-      return true;
+    if ((user == null ||
+      !Roles.userIsInRole(user, roles)) && route) {
+        Router.go(route);
     }
 
+    if (user != null) {
+      if (Roles.userIsInRole(user, roles)) {
+        return true;
+      }
+    }
     return false;
   };
 
-  /**
-   *
-   */
   var isAdminLoggedIn = function() {
-    return isUserLoggedInWithRoles(["admin"], "home");
+    isUserLoggedInWithRoles(["admin"], "home");
   };
 
-  /**
-   *
-   */
   var isUserLoggedIn = function() {
-    return isUserLoggedInWithRoles(["admin","user"], "home");
+    isUserLoggedInWithRoles(["admin","user"], "home");
   };
 
-  /**
-   *
-   */
   var routeHome = function() {
     console.log("route home");
     Router.go("home");
   };
 
-  /**
-   *
-   */
   Router.configure({
-    layoutTemplate: 'layout',
-    loadingTemplate: 'loading'
+    layoutTemplate: "layout",
+    loadingTemplate: "loading"
   });
 
-  // /**
-  //  *
-  //  */
-  // Router.onBeforeAction(function () {
-  //   // all properties available in the route function
-  //   // are also available here such as this.params
-  //
-  //   if (Meteor.loggingIn()) {
-  //     this.render('home');
-  //   }
-  //   else {
-  //     // otherwise don't hold up the rest of hooks or our route/action function
-  //     // from running
-  //     this.next();
-  //   }
-  // });
+  // simple route with
+  // name "about" that
+  // matches "/about" and automatically renders
+  // template "about"
+  Router.map(function () {
+    this.route("home", {
+      path: "/"
+    });
 
-  Router.route('/', {
+    this.route("orbit", {
+      path: "/orbit",
+      onBeforeAction: isUserLoggedIn,
+    });
 
-    name: 'home',
+    this.route("settings", {
+      path: "/settings",
+      onBeforeAction: isUserLoggedIn,
+    });
 
-    template: 'home',
+    this.route("faq", {
+      path: "/faq"
+    });
 
-    waitOn: function() {
-      return Meteor.subscribe("clients-subscription");
-    },
+    this.route("help", {
+      path: "/help"
+    });
 
-    data: function() {
-      return {
-        clients: Clients.find()
-      };
-    },
+    this.route("accounts", {
+      path: "/admin/accounts",
+      onBeforeAction: isAdminLoggedIn,
+    });
 
-    onBeforeAction: function() {
-
-      if (!isUserLoggedIn()) {
-        this.render("welcome");
-      }
-      else {
-        this.next();
-      }
-    },
-
-    action: function() {
-      this.render();
-    }
+    this.route("notFound", {
+      path: "*",
+      // onAfterAction: routeHome,
+    });
   });
-
-  Router.route('/tutorial', {
-
-    name: 'tutorial',
-
-    template: 'tutorial',
-
-    waitOn: function() {
-
-    },
-
-    data: function() {
-
-    },
-
-    onBeforeAction: function() {
-      if (!isUserLoggedIn()) {
-        this.render("welcome");
-      }
-      else {
-        this.next();
-      }
-    },
-
-    action: function() {
-      this.render();
-    }
-  });
-
-  // Router.route('/admin2/accounts', {
-  //
-  //   name: 'admin.accounts',
-  //
-  //   template: 'accounts',
-  //
-  //   waitOn: function() {
-  //
-  //   },
-  //
-  //   onBeforeAction: function() {
-  //
-  //     console.log('on before action');
-  //
-  //     if (!isAdminLoggedIn()) {
-  //       Router.go('home');
-  //     }
-  //     else {
-  //       this.next();
-  //     }
-  //   },
-  //
-  //   action: function() {
-  //     this.render();
-  //   }
-  // });
 }

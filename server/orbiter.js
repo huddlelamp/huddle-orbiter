@@ -45,8 +45,27 @@ if (Meteor.isServer) {
         // If port is null or empty HuddleOrbiter will start on a random port
         // which will be returned afterwards.
         port = _orbiters[userId].start(port);
+
+        Settings.update(
+          { type: "server" },
+          {
+            type: "server",
+            userId: userId,
+            isRunning: true
+          },
+          { upsert: true }
+        );
       }
       catch (err) {
+        Settings.update(
+          { type: "server" },
+          {
+            type: "server",
+            userId: userId,
+            isRunning: false
+          },
+          { upsert: true }
+        );
         return err;
       }
 
@@ -65,6 +84,16 @@ if (Meteor.isServer) {
         _orbiters[userId].stop();
 
         _orbiters[userId] = undefined;
+
+        Settings.update(
+          { type: "server" },
+          {
+            type: "server",
+            userId: userId,
+            isRunning: false
+          },
+          { upsert: true }
+        );
 
         return true;
       }
@@ -133,7 +162,7 @@ if (Meteor.isServer) {
         var distance = Math.sqrt(dx * dx + dy * dy);
 
         var radiansToDegree = function(angle) {
-          return angle * (180.0 / Math.PI);
+            return angle * (180.0 / Math.PI);
         };
 
         // device2 to device1 angle
@@ -196,7 +225,7 @@ if (Meteor.isServer) {
 
     UserStatus.events.on("connectionLogin", function(fields) {
       var userId = fields.userId;
-      var user = Meteor.users.findOne(userId);
+      var user = getUser(userId);
 
       if (user) {
         var email = user.emails[0].address;
@@ -204,9 +233,9 @@ if (Meteor.isServer) {
         console.log(email + " logged in at " + fields.loginTime);
 
         var port = undefined;
-        if (typeof(user.profile) !== undefined) {
-          var profile = user.profile;
-          port = profile.orbiterPort;
+        if (typeof(user.settings) !== "undefined") {
+          var userSettings = user.settings;
+          port = userSettings.orbiterPort;
         }
 
         var newPort = startOrbiter(userId, port);
@@ -215,7 +244,7 @@ if (Meteor.isServer) {
 
         if (newPort !== port) {
           Meteor.users.update({ _id: user._id }, { $set: {
-            "profile.orbiterPort": newPort
+            "settings.orbiterPort": newPort
           }}, { multi: true } );
         }
       }
@@ -223,8 +252,7 @@ if (Meteor.isServer) {
 
     UserStatus.events.on("connectionLogout", function(fields) {
       var userId = fields.userId;
-
-      var user = Meteor.users.findOne(userId);
+      var user = getUser(userId);
 
       if (user) {
         var email = user.emails[0].address;

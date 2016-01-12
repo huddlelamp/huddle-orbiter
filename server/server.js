@@ -21,7 +21,12 @@ if (Meteor.isServer) {
 
     Clients.remove({});
     Meteor.publish("clients-subscription", function() {
-      return Clients.find({ userId: this.userId });
+      return Clients.find({userId: this.userId});
+    });
+
+    Settings.remove({});
+    Meteor.publish("settings-subscription", function() {
+      return Settings.find();
     });
   });
 }

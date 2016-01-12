@@ -3,21 +3,30 @@
 # "meteor add" and "meteor remove" will edit this file for you,
 # but you can also edit it by hand.
 
-meteor-platform
 iron:router
 accounts-password
 alanning:roles
 raedle:huddle
 sewdn:highlightjs
+gadicohen:headers
 mizzao:bootstrap-3
 ian:accounts-ui-bootstrap-3
 mrt:accounts-admin-ui-bootstrap-3
 mrt:jquery-ui
 mizzao:user-status
 raedle:huddle-orbiter
-steeve:jquery-qrcode
-linto:fontawesome
-aldeed:simple-schema
-yogiben:admin
-meteorhacks:kadira
 
+standard-minifiers
+meteor-base
+mobile-experience
+mongo
+blaze-html-templates
+session
+jquery
+tracker
+logging
+reload
+random
+ejson
+spacebars
+check
