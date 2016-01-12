@@ -1,3 +1,5 @@
+/* global Accounts */
+/* global Meteor */
 if (Meteor.isServer) {
   Meteor.startup(function() {
     Accounts.config({

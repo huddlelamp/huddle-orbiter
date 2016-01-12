@@ -17,8 +17,6 @@ if (Meteor.isServer) {
     // if(!Meteor.roles.findOne({name: "double-secret"}))
     //     Roles.createRole("double-secret");
 
-    var orbiter;
-
     Clients.remove({});
     Meteor.publish("clients-subscription", function() {
       return Clients.find({ userId: this.userId });

@@ -1,3 +1,6 @@
+/* global UserStatus */
+/* global Clients */
+/* global HuddleOrbiter */
 if (Meteor.isServer) {
 
   Meteor.startup(function() {
